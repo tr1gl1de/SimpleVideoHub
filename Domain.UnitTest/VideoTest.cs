@@ -141,4 +141,14 @@ public class VideoTest : IDisposable
         // Assert
         Assert.Throws<PathNotExistException>(a);
     }
+
+    [Fact]
+    public void PrivateConstructor_ShouldCreateInstanceForEF()
+    {
+        // Act
+        var actualVideo = Activator.CreateInstance(typeof(Video), true);
+        
+        // Assert
+        Assert.NotNull(actualVideo);
+    }
 }
