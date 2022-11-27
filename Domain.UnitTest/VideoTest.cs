@@ -20,17 +20,6 @@ public class VideoTest : IDisposable
         DeleteFile(_defaultPathToVideoFile);
     }
 
-    private static void CreateFile(string pathToFile)
-    {
-        Directory.CreateDirectory(pathToFile.Remove(pathToFile.LastIndexOf('\\')));
-        File.Create(pathToFile).Dispose();
-    }
-
-    private static void DeleteFile(string pathToFile)
-    {
-        File.Delete(pathToFile);
-    }
-    
 
     [Theory]
     [InlineData("F5EED3BF-8870-47DF-9EC1-2835F014BBCF")]
@@ -150,5 +139,24 @@ public class VideoTest : IDisposable
         
         // Assert
         Assert.NotNull(actualVideo);
+    }
+
+    private static void CreateFile(string pathToFile)
+    {
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+        {
+            Directory.CreateDirectory(pathToFile.Remove(pathToFile.LastIndexOf('\\')));
+        }
+
+        if (Environment.OSVersion.Platform == PlatformID.Unix)
+        {
+            Directory.CreateDirectory(pathToFile.Remove(pathToFile.LastIndexOf('/')));
+        }
+        File.Create(pathToFile).Dispose();
+    }
+
+    private static void DeleteFile(string pathToFile)
+    {
+        File.Delete(pathToFile);
     }
 }
